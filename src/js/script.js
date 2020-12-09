@@ -5,13 +5,13 @@
 
   /* Listners */
   function initActions(){
-    const covers = document.querySelectorAll('.book__image');
-    for (let cover of covers){
-      /* 'dblclick' starts addToFavorite */
-      cover.addEventListener('dblclick', function(){
-        addToFavorite(this);
-      });
-    }
+    /* 'dblclick' starts addToFavorite */
+    const booksList = document.querySelector('.books-list');
+    booksList.addEventListener('dblclick', function(event){
+      if (event.target.offsetParent.classList.contains('book__image')){
+        addToFavorite(event.target.offsetParent);
+      }
+    });
   }
 
   /* Functions */
