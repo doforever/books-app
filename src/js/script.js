@@ -26,12 +26,13 @@
   }
 
   function addToFavorite(target){
-    /* add data-id to favoriteBooks */
-    if (!favoriteBooks.includes(target.dataset.id)) favoriteBooks.push(target.dataset.id);
-    /* add class favorite to .book__image */
-    target.classList.add('favorite');
-    console.log('favorites', favoriteBooks);
-
+    if (!favoriteBooks.includes(target.dataset.id)) {
+      favoriteBooks.push(target.dataset.id);
+      target.classList.add('favorite');
+    } else {
+      favoriteBooks.splice(favoriteBooks.indexOf(target.dataset.id), 1);
+      target.classList.remove('favorite');
+    }
   }
 
   /* Run app */
