@@ -35,25 +35,23 @@
   function renderBooks(){
     const bookTemplate = Handlebars.compile(document.querySelector('#template-book').innerHTML);
     for (let book of dataSource.books){
-      const generatedHTML = bookTemplate(book);
-      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
-      const ratingFill = generatedDOM.querySelector('.book__rating__fill');
-      let customBackground = '';
-      if (book.rating < 6){
-        customBackground = 'background: linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
-      } else if (book.rating > 6 && book.rating <= 8){
-        customBackground = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
-      } else if (book.rating > 8 && book.rating <= 9) {
-        customBackground = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
-      } else {
-        customBackground = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
-      }
-      const customWidth = book.rating*10 + '%';
-      ratingFill.style.background = customBackground;
-      ratingFill.style.width = customWidth;
-
-      booksList.appendChild(generatedDOM);
+      const generatedHTML = bookTemplate(setCustomStyle(book));
+      booksList.appendChild(utils.createDOMFromHTML(generatedHTML));
     }
+  }
+
+  function setCustomStyle(book) {
+    if (book.rating < 6){
+      book.customBackground = 'background: linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
+    } else if (book.rating > 6 && book.rating <= 8){
+      book.customBackground = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
+    } else if (book.rating > 8 && book.rating <= 9) {
+      book.customBackground = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+    } else {
+      book.customBackground = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
+    }
+    book.customWidth = book.rating*10 + '%';
+    return book;
   }
 
   function addToFavorite(target){
