@@ -36,7 +36,23 @@
     const bookTemplate = Handlebars.compile(document.querySelector('#template-book').innerHTML);
     for (let book of dataSource.books){
       const generatedHTML = bookTemplate(book);
-      booksList.appendChild(utils.createDOMFromHTML(generatedHTML));
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+      const ratingFill = generatedDOM.querySelector('.book__rating__fill');
+      let customBackground = '';
+      if (book.rating < 6){
+        customBackground = 'background: linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
+      } else if (book.rating > 6 && book.rating <= 8){
+        customBackground = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
+      } else if (book.rating > 8 && book.rating <= 9) {
+        customBackground = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+      } else {
+        customBackground = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
+      }
+      const customWidth = book.rating*10 + '%';
+      ratingFill.style.background = customBackground;
+      ratingFill.style.width = customWidth;
+
+      booksList.appendChild(generatedDOM);
     }
   }
 
@@ -51,7 +67,6 @@
   }
 
   function filter(){
-    console.log('filters', filters);
     const adultFilter = filters.includes('adults') ? 'adults' : '';
     const fictionFilter = filters.includes('nonFiction') ? 'nonFiction' : '';
     function checkFilter (filter, book) {
@@ -64,8 +79,8 @@
     /* loop through all books dataSource.books */
     for (let book of dataSource.books){
       const bookDOM = booksList.querySelector(`a[data-id="${book.id}"]`);
-      if (!checkFilter(adultFilter, book) || !checkFilter(fictionFilter, book)){
       /* add or remove class hidden */
+      if (!checkFilter(adultFilter, book) || !checkFilter(fictionFilter, book)){
         bookDOM.classList.add('hidden');
       } else {
         if (bookDOM.classList.contains('hidden')) bookDOM.classList.remove('hidden');
