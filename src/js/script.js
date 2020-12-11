@@ -42,8 +42,6 @@
       this.dom.booksList = document.querySelector('.books-list');
     }
     filter(){
-      const adultFilter = this.filters.includes('adults') ? 'adults' : '';
-      const fictionFilter = this.filters.includes('nonFiction') ? 'nonFiction' : '';
       function checkFilter (filter, book) {
         if (filter && book.details[filter]) {
           return true;
@@ -53,9 +51,14 @@
       }
       /* loop through all books dataSource.books */
       for (let book of dataSource.books){
+        let hide = false;
         const bookDOM = this.dom.booksList.querySelector(`a[data-id="${book.id}"]`);
+        /* loop through all filters */
+        for (let filter of this.filters){
+          if(!checkFilter(filter, book)) hide = true;
+        }
         /* add or remove class hidden */
-        if (!checkFilter(adultFilter, book) || !checkFilter(fictionFilter, book)){
+        if (hide){
           bookDOM.classList.add('hidden');
         } else {
           if (bookDOM.classList.contains('hidden')) bookDOM.classList.remove('hidden');
@@ -86,5 +89,5 @@
     }
   }
 
-  const app = new BooksList();
+  new BooksList();
 }
