@@ -30,7 +30,7 @@
         && event.target.name === 'filter'){
           if (event.target.checked){
             this.filters.push(event.target.value);
-          } else if (this.filters.includes(event.target.value)){
+          } else {
             this.filters.splice(this.filters.indexOf(event.target.value),1);
           }
         }
@@ -42,20 +42,16 @@
       this.dom.booksList = document.querySelector('.books-list');
     }
     filter(){
-      function checkFilter (filter, book) {
-        if (filter && book.details[filter]) {
-          return true;
-        } else if (!filter && !book.details[filter]){
-          return true;
-        }
-      }
       /* loop through all books dataSource.books */
       for (let book of dataSource.books){
         let hide = false;
         const bookDOM = this.dom.booksList.querySelector(`a[data-id="${book.id}"]`);
         /* loop through all filters */
         for (let filter of this.filters){
-          if(!checkFilter(filter, book)) hide = true;
+          if(!book.details[filter]) {
+            hide = true;
+            break;
+          }
         }
         /* add or remove class hidden */
         if (hide){
@@ -76,7 +72,7 @@
     }
     setCustomStyle(book) {
       if (book.rating < 6){
-        book.customBackground = 'background: linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
+        book.customBackground = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
       } else if (book.rating > 6 && book.rating <= 8){
         book.customBackground = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
       } else if (book.rating > 8 && book.rating <= 9) {
